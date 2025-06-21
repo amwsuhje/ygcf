@@ -18,8 +18,7 @@ jobs:
           git config --global user.email 'amwsuhje@gmail.com'
 
       - name: Add upstream remote
-        run: git remote add upstream https://github.com/yonggekkk/Cloudflare_vless_trojan/blob/main/Vless_workers_pages/_worker.js
-
+        run: git remote add upstream https://github.com/yonggekkk/Cloudflare_vless_trojan
       - name: Fetch upstream
         run: git fetch upstream
 
