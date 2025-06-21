@@ -1,0 +1,32 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # 每天凌晨1点同步（UTC时间）
+  workflow_dispatch:      # 允许手动运行此工作流
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repo
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'amwsuhje'
+          git config --global user.email 'amwsuhje@gmail.com'
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/yonggekkk/Cloudflare_vless_trojan/blob/main/Vless_workers_pages/_worker.js
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Merge upstream changes
+        run: |
+          git checkout main
+          git merge upstream/main --allow-unrelated-histories -m "Sync from upstream"
+      
+      - name: Push changes
+        run: git push origin main
