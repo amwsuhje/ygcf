@@ -1,0 +1,38 @@
+name: Sync _worker.js from Upstream
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 每天凌晨 2 点运行（UTC 时间）
+  workflow_dispatch:       # 支持手动触发
+
+jobs:
+  sync-worker-file:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout your repository
+      uses: actions/checkout@v3
+
+    - name: Checkout upstream repository
+      uses: actions/checkout@v3
+      with:
+        repository: yonggekkk/Cloudflare_vless_trojan
+        path: upstream
+        fetch-depth: 1
+
+    - name: Copy _worker.js from upstream to root
+      run: |
+        cp upstream/Vless_workers_pages/_worker.js ./_worker.js
+
+    - name: Commit and push if changed
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add _worker.js
+
+        if git diff --cached --quiet; then
+          echo "No changes to commit."
+        else
+          git commit -m "Sync _worker.js from upstream"
+          git push
+        fi
