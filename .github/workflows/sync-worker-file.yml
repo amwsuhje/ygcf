@@ -2,8 +2,8 @@ name: Sync _worker.js from Upstream
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # 每天凌晨 2 点运行（UTC 时间）
-  workflow_dispatch:       # 支持手动触发
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   sync-worker-file:
@@ -37,4 +37,3 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/amwsuhje/ygcf.git
           git push origin main
         fi
-
